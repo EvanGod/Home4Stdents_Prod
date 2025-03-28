@@ -1,0 +1,97 @@
+.register-content {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  height: 100vh; 
+  background-color: #f8f8f8;
+}
+
+.register-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.register-card {
+  width: 90%;
+  max-width: 400px; 
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.register-container ion-icon {
+  color: #2c3e50; 
+}
+
+.custom-spinner .loading-wrapper {
+  background: rgba(0, 0, 0, 0.8);
+  color: white; 
+  border-radius: 10px;
+}
+
+.custom-spinner .loading-spinner {
+  --color: #FFD700; 
+}
+
+ion-alert .alert-head {
+  background-color: #ff3b30; 
+  color: white;
+}
+.login-text {
+  display: block;
+  text-align: center;
+  margin-top: 16px;
+  
+  span {
+    color: #007bff; 
+    text-decoration: underline; 
+    cursor: pointer; 
+    font-weight: 600; 
+  }
+
+  span:hover {
+    color: #0056b3; 
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .register-card {
+    max-width: 80%;
+    padding: 18px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .register-card {
+    max-width: 400px;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+  ion-item {
+    --border-radius: 8px; 
+    margin-bottom: 10px;
+  }
+  //Ajuste
+  @media (max-width: 600px) {
+    .register-card {
+      padding: 15px;
+    }
+  
+    .login-text {
+      font-size: 0.8rem;
+    }
+  }
+}

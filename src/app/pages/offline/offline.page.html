@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Sin Conexión</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="offline-container">
+    <h2>No hay conexión a Internet</h2>
+    <p>Verifica tu conexión y vuelve a intentarlo.</p>
+    <ion-button (click)="tryReload()" expand="block">
+      Reintentar
+    </ion-button>
+  </div>
+</ion-content>

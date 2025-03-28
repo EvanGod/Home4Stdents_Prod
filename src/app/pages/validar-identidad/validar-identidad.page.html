@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Valida tu Identidad</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h2>Selecciona tu documento:</h2>
+
+  <ion-radio-group [(ngModel)]="documentoSeleccionado">
+    <ion-item>
+      <ion-label>INE</ion-label>
+      <ion-radio slot="start" value="ine"></ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-label>Pasaporte</ion-label>
+      <ion-radio slot="start" value="pasaporte"></ion-radio>
+    </ion-item>
+  </ion-radio-group>
+
+  <!-- Opciones para INE -->
+  <div *ngIf="documentoSeleccionado === 'ine'">
+    <h3>Sube imágenes de tu INE</h3>
+    <ion-item>
+      <ion-label>INE (Frontal)</ion-label>
+      <ion-button (click)="tomarFoto('frontal')">Tomar Foto</ion-button>
+      <input type="file" (change)="cargarImagen($event, 'frontal')" accept="image/*">
+    </ion-item>
+    <ion-img *ngIf="ineFrontal" [src]="ineFrontal" class="preview-img"></ion-img>
+
+    <ion-item>
+      <ion-label>INE (Reverso)</ion-label>
+      <ion-button (click)="tomarFoto('reverso')">Tomar Foto</ion-button>
+      <input type="file" (change)="cargarImagen($event, 'reverso')" accept="image/*">
+    </ion-item>
+    <ion-img *ngIf="ineReverso" [src]="ineReverso" class="preview-img"></ion-img>
+  </div>
+
+  <!-- Opciones para Pasaporte -->
+  <div *ngIf="documentoSeleccionado === 'pasaporte'">
+    <h3>Sube una imagen de tu Pasaporte</h3>
+    <ion-item>
+      <ion-label>Pasaporte</ion-label>
+      <ion-button (click)="tomarFoto('pasaporte')">Tomar Foto</ion-button>
+      <input type="file" (change)="cargarImagen($event, 'pasaporte')" accept="image/*">
+    </ion-item>
+    <ion-img *ngIf="pasaporte" [src]="pasaporte" class="preview-img"></ion-img>
+  </div>
+
+  <ion-button expand="full" (click)="siguiente()">Siguiente</ion-button>
+</ion-content>
+

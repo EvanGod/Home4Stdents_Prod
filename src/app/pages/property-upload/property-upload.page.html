@@ -1,0 +1,138 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="onBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+        Volver
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Formulario de Propiedad</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="property-content">
+  <ion-card class="centered-card">
+    <ion-card-content>
+      <div class="property-container">
+        <ion-icon name="home" size="large"></ion-icon>
+        <h1>Subir imágenes de la propiedad</h1>
+
+        <h2>Subir Imágenes</h2>
+        <ion-item>
+          <ion-label>Seleccionar imágenes:</ion-label>
+          <input type="file" (change)="onImageSelected($event)" multiple accept="image/*" class="input-file">
+        </ion-item>
+
+        <div class="image-preview-container">
+          <div *ngFor="let img of propertyImages" class="image-preview">
+            <img [src]="img" alt="Imagen subida" class="img-preview">
+          </div>
+        </div>
+
+        <ion-item>
+          <ion-label>Tipo:</ion-label>
+          <ion-radio-group [(ngModel)]="propertyType">
+            <ion-item>
+              <ion-radio slot="start" value="casa"></ion-radio>
+              <ion-label>Casa</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-radio slot="start" value="departamento"></ion-radio>
+              <ion-label>Departamento</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-radio slot="start" value="cuarto"></ion-radio>
+              <ion-label>Cuarto</ion-label>
+            </ion-item>
+          </ion-radio-group>
+        </ion-item>
+
+        <!-- Aquí va el mapa -->
+        <div id="map" style="height: 200px; width: 100%; margin-bottom: 16px;"></div>
+
+        <h2>ESPECIFICACIONES</h2>
+
+        <ion-item>
+          <ion-label position="stacked">Precio</ion-label>
+          <ion-input type="number" [(ngModel)]="price" placeholder="Ingresa el precio de la propiedad" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Habitaciones:</ion-label>
+          <ion-select [(ngModel)]="rooms">
+            <ion-select-option value="1">1</ion-select-option>
+            <ion-select-option value="2">2</ion-select-option>
+            <ion-select-option value="3">3</ion-select-option>
+            <ion-select-option value="4">4+</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Baños:</ion-label>
+          <ion-select [(ngModel)]="bathrooms">
+            <ion-select-option value="1">1</ion-select-option>
+            <ion-select-option value="2">2</ion-select-option>
+            <ion-select-option value="3">3+</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Estacionamiento:</ion-label>
+          <ion-select [(ngModel)]="parking">
+            <ion-select-option value="0">No</ion-select-option>
+            <ion-select-option value="1">1</ion-select-option>
+            <ion-select-option value="2">2+</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Especificaciones adicionales</ion-label>
+          <ion-textarea [(ngModel)]="additionalSpecs" placeholder="Escribe aquí cualquier detalle adicional"></ion-textarea>
+        </ion-item>
+
+        <h2>SERVICIOS DISPONIBLES</h2>
+
+        <ion-item>
+          <ion-label>Servicios:</ion-label>
+          <ion-checkbox [(ngModel)]="water"> Agua</ion-checkbox>
+          <ion-checkbox [(ngModel)]="electricity"> Luz</ion-checkbox>
+          <ion-checkbox [(ngModel)]="internet"> Internet</ion-checkbox>
+          <ion-checkbox [(ngModel)]="gas"> Gas</ion-checkbox>
+        </ion-item>
+
+        <h2>VALIDAR TU IDENTIDAD</h2>
+
+        <ion-item>
+          <ion-label>Documento:</ion-label>
+          <ion-checkbox [(ngModel)]="ineSelected"> INE</ion-checkbox>
+          <ion-checkbox [(ngModel)]="passportSelected"> Pasaporte</ion-checkbox>
+        </ion-item>
+
+        <div class="upload-section">
+          <ion-item class="upload-box" *ngIf="ineSelected || passportSelected">
+            <ion-label>Sube tu documento:</ion-label>
+            <input type="file" (change)="onFileSelected($event)" class="input-file">
+          </ion-item>
+
+          <div class="document-preview" *ngIf="documentPreview">
+            <img [src]="documentPreview" alt="Documento subido" class="img-preview">
+          </div>
+        </div>
+
+        <ion-button [disabled]="!isFormValid()" expand="full" color="success" (click)="publish()">VALIDAR Y PUBLICAR</ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<!-- Modal de confirmación -->
+<div id="confirmationModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="green" viewBox="0 0 16 16">
+      <path d="M16 8A8 8 0 1 1 8 0a8 8 0 0 1 8 8zM6.354 11.354l6-6a.5.5 0 1 0-.708-.708l-5.646 5.647L4.354 8.354a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0z"/>
+    </svg>
+    <h1>PROPIEDAD PUBLICADA CON ÉXITO</h1>
+    <button class="modal-button" (click)="closeModal()">OK</button>
+  </div>
+</div>

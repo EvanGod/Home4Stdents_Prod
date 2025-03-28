@@ -1,0 +1,177 @@
+.property-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 1rem; /* Espaciado para evitar bordes pegados en móviles */
+}
+
+.centered-card {
+  width: 90%;
+  max-width: 600px; /* Se amplió para mejor visibilidad */
+  margin: auto;
+  text-align: center;
+  padding: 1rem;
+}
+
+/* Contenedor de imágenes responsivo */
+.image-preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.image-preview img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+/* Grid para especificaciones */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+/* Estilos para checkbox de servicios */
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* Sección de carga de documentos */
+.upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.upload-box {
+  width: 100%;
+  text-align: center;
+}
+
+/* Vista previa del documento */
+.document-preview img {
+  max-width: 120px;
+  height: auto;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+/* Estilos del mapa */
+#map {
+  height: 300px;
+  width: 100%;
+  border-radius: 10px;
+  margin-top: 15px;
+}
+
+/* Estilos de la modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  text-align: center;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 400px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h1 {
+  color: #333; 
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 30px;
+  cursor: pointer;
+  color: black;
+}
+
+.modal-button {
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .property-content {
+    padding: 1rem; /* Ajustado el padding para pantallas pequeñas */
+  }
+
+  .centered-card {
+    width: 95%;
+    padding: 1rem;
+  }
+
+  /* Ajustes de la imagen */
+  .image-preview img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-content {
+    width: 90%;
+  }
+
+  /* Estilo para input y botones en pantallas pequeñas */
+  .input-file {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 16px;
+  }
+
+  ion-button {
+    font-size: 14px;
+  }
+
+  .modal-content h1 {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content h1 {
+    font-size: 16px;
+  }
+
+  .modal-button {
+    font-size: 14px;
+  }
+}

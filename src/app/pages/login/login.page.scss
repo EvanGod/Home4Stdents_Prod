@@ -1,0 +1,51 @@
+.login-content {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    height: 100vh; 
+    background-color: #f8f8f8;
+  }
+  
+  .login-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .login-card {
+    width: 90%;
+    max-width: 400px; 
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .custom-spinner .loading-wrapper {
+    background: rgba(0, 0, 0, 0.8);
+    color: white; 
+    border-radius: 10px;
+  }
+  
+  .custom-spinner .loading-spinner {
+    --color: #FFD700; 
+  }
+
+  .register-text {
+    display: block;
+    text-align: center;
+    margin-top: 16px;
+    
+    span {
+      color: #007bff; 
+      text-decoration: underline; 
+      cursor: pointer; 
+      font-weight: 600; 
+    }
+  
+    span:hover {
+      color: #0056b3; 
+    }
+  }
+ 

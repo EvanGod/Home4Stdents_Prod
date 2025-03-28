@@ -1,0 +1,248 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Contrato de Arrendamiento</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Contenedor principal (usado para capturar el contenido en PDF) -->
+  <div class="contract-container" id="contractContent">
+    <h2>Contrato de Arrendamiento</h2>
+
+    <!-- PRIMERA SECCIÓN -->
+    <div class="contract-section">
+      <p><strong>PRIMERA. PARTES DEL CONTRATO</strong></p>
+
+      <div class="field-group">
+        <label class="field-label" for="arrendadorInput">Arrendador:</label>
+        <ion-input id="arrendadorInput" placeholder="Juan Pérez" [(ngModel)]="contract.arrendador"></ion-input>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="arrendatarioInput">Arrendatario:</label>
+        <ion-input id="arrendatarioInput" placeholder="María López" [(ngModel)]="contract.arrendatario"></ion-input>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="fechaContrato">Fecha de Contrato:</label>
+        <ion-datetime
+          id="fechaContrato"
+          display-format="DD/MM/YYYY"
+          picker-format="DD MMMM YYYY"
+          min="2020-01-01"
+          max="2050-12-31"
+          [(ngModel)]="contract.fecha"
+        ></ion-datetime>
+      </div>
+
+      <p>
+        En la Ciudad de Querétaro, a <strong>{{ contract.fecha | date:'dd/MM/yyyy' }}</strong>,
+        comparecen por una parte el Sr./Sra. <strong>{{ contract.arrendador }}</strong> en su calidad de
+        <strong>ARRENDADOR</strong>, y por otra parte el Sr./Sra. <strong>{{ contract.arrendatario }}</strong> en su calidad de
+        <strong>ARRENDATARIO</strong>.
+      </p>
+    </div>
+
+    <!-- SEGUNDA SECCIÓN -->
+    <div class="contract-section">
+      <p><strong>SEGUNDA. OBJETO DEL CONTRATO</strong></p>
+
+      <div class="field-group">
+        <label class="field-label" for="direccionInput">Dirección del Inmueble:</label>
+        <ion-input id="direccionInput" placeholder="Av. Siempre Viva 123, Querétaro, Qro." [(ngModel)]="contract.direccion"></ion-input>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="usoInput">Uso del Inmueble:</label>
+        <ion-input id="usoInput" placeholder="Habitacional / Comercial" [(ngModel)]="contract.uso"></ion-input>
+      </div>
+
+      <p>
+        El ARRENDADOR da en arrendamiento al ARRENDATARIO el inmueble ubicado en
+        <strong>{{ contract.direccion }}</strong>, el cual será destinado
+        exclusivamente para <strong>{{ contract.uso }}</strong>.
+      </p>
+    </div>
+
+    <!-- TERCERA SECCIÓN -->
+    <div class="contract-section">
+      <p><strong>TERCERA. DURACIÓN DEL CONTRATO</strong></p>
+
+      <div class="field-group">
+        <label class="field-label" for="duracionInput">Duración (meses):</label>
+        <ion-input id="duracionInput" placeholder="12" [(ngModel)]="contract.duracion"></ion-input>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="fechaInicio">Fecha de Inicio:</label>
+        <ion-datetime
+          id="fechaInicio"
+          display-format="DD/MM/YYYY"
+          picker-format="DD MMMM YYYY"
+          min="2020-01-01"
+          max="2050-12-31"
+          [(ngModel)]="contract.fechaInicio"
+        ></ion-datetime>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="fechaTerminacion">Fecha de Terminación:</label>
+        <ion-datetime
+          id="fechaTerminacion"
+          display-format="DD/MM/YYYY"
+          picker-format="DD MMMM YYYY"
+          min="2020-01-01"
+          max="2050-12-31"
+          [(ngModel)]="contract.fechaTerminacion"
+        ></ion-datetime>
+      </div>
+
+      <p>
+        El contrato tendrá una duración de <strong>{{ contract.duracion }} meses</strong>,
+        iniciando el día <strong>{{ contract.fechaInicio | date:'dd/MM/yyyy' }}</strong> y
+        finalizando el día <strong>{{ contract.fechaTerminacion | date:'dd/MM/yyyy' }}</strong>.
+      </p>
+    </div>
+
+    <!-- CUARTA SECCIÓN -->
+    <div class="contract-section">
+      <p><strong>CUARTA. RENTA Y FORMA DE PAGO</strong></p>
+
+      <div class="field-group">
+        <label class="field-label" for="montoRentaInput">Monto de la Renta:</label>
+        <ion-input id="montoRentaInput" placeholder="$5000" [(ngModel)]="contract.montoRenta"></ion-input>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="cantidadLetrasInput">Cantidad en Letras:</label>
+        <ion-input id="cantidadLetrasInput" placeholder="Cinco mil pesos" [(ngModel)]="contract.cantidadLetras"></ion-input>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="diasPagoInput">Número de Días para Pagar:</label>
+        <ion-input id="diasPagoInput" placeholder="5" [(ngModel)]="contract.diasPago"></ion-input>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="metodoPagoInput">Método de Pago:</label>
+        <ion-input id="metodoPagoInput" placeholder="Transferencia" [(ngModel)]="contract.metodoPago"></ion-input>
+      </div>
+
+      <p>
+        El ARRENDATARIO pagará al ARRENDADOR la cantidad de
+        <strong>{{ contract.montoRenta }} ({{ contract.cantidadLetras }})</strong>
+        mensualmente, dentro de los primeros <strong>{{ contract.diasPago }}</strong> días de cada mes, mediante
+        <strong>{{ contract.metodoPago }}</strong>.
+      </p>
+    </div>
+
+    <!-- QUINTA SECCIÓN -->
+    <div class="contract-section">
+      <p><strong>QUINTA. DEPÓSITO EN GARANTÍA</strong></p>
+
+      <div class="field-group">
+        <label class="field-label" for="depositoInput">Depósito en Garantía:</label>
+        <ion-input id="depositoInput" placeholder="$5000" [(ngModel)]="contract.deposito"></ion-input>
+      </div>
+
+      <p>
+        El ARRENDATARIO entrega en este acto la cantidad de <strong>{{ contract.deposito }}</strong> como depósito en garantía, el cual será
+        devuelto al finalizar el contrato si no existen daños en el inmueble.
+      </p>
+    </div>
+
+    <!-- SEXTA SECCIÓN -->
+    <div class="contract-section">
+      <p><strong>SEXTA. OBLIGACIONES DEL ARRENDADOR</strong></p>
+      <ul>
+        <li>Garantizar el uso pacífico del inmueble.</li>
+        <li>Mantener en buen estado las instalaciones principales del inmueble.</li>
+      </ul>
+    </div>
+
+    <!-- SÉPTIMA SECCIÓN -->
+    <div class="contract-section">
+      <p><strong>SÉPTIMA. OBLIGACIONES DEL ARRENDATARIO</strong></p>
+      <ul>
+        <li>Pagar puntualmente la renta.</li>
+        <li>Conservar en buen estado el inmueble y sus instalaciones.</li>
+        <li>No subarrendar ni ceder el uso del inmueble sin autorización del ARRENDADOR.</li>
+      </ul>
+    </div>
+
+    <!-- OCTAVA SECCIÓN -->
+    <div class="contract-section">
+      <p><strong>OCTAVA. CAUSAS DE TERMINACIÓN</strong></p>
+      <ul>
+        <li>
+          Incumplimiento en el pago de la renta por más de 
+          <div class="field-group inline-field">
+            <label class="field-label" for="numeroMesesInput">N° Meses:</label>
+            <ion-input id="numeroMesesInput" placeholder="2" [(ngModel)]="contract.numeroMeses"></ion-input>
+          </div>
+          meses.
+        </li>
+        <li>Daños graves al inmueble por parte del ARRENDATARIO.</li>
+        <li>Uso distinto al pactado en el contrato.</li>
+      </ul>
+    </div>
+
+    <!-- NOVENA SECCIÓN -->
+    <div class="contract-section">
+      <p><strong>NOVENA. JURISDICCIÓN Y LEY APLICABLE</strong></p>
+      <p>
+        Para todo lo no previsto en este contrato, ambas partes se someten a las
+        leyes de México y a la jurisdicción de los tribunales de Querétaro.
+      </p>
+    </div>
+
+    <!-- FIRMAS -->
+    <div class="contract-section">
+      <p>
+        <strong>
+          En prueba de conformidad, firman ambas partes en Querétaro,
+          {{ contract.fecha | date:'dd/MM/yyyy' }}:
+        </strong>
+      </p>
+    </div>
+
+    <!-- Firma del arrendador: línea para firmar en papel -->
+    <div class="signature-section">
+      <p><strong>EL ARRENDADOR</strong></p>
+      <div class="line-for-signature"></div>
+      <p class="signature-text">Firma del Arrendador</p>
+    </div>
+
+    <!-- Firma del arrendatario: input para nombre y línea para firma -->
+    <div class="contract-section">
+      <p><strong>EL ARRENDATARIO</strong></p>
+      <div class="field-group">
+        <label class="field-label" for="arrendatarioFirma">Nombre (Firma en papel):</label>
+        <ion-input id="arrendatarioFirma" placeholder="María López" [(ngModel)]="contract.arrendatario"></ion-input>
+      </div>
+      <div class="line-for-signature"></div>
+      <p class="signature-text">Firma del Arrendatario</p>
+    </div>
+
+    <!-- Aceptación -->
+    <ion-item lines="none">
+      <ion-checkbox slot="start" [(ngModel)]="contract.acepta"></ion-checkbox>
+      <ion-label>Acepto los términos del contrato</ion-label>
+    </ion-item>
+  </div>
+
+  <!-- Botón para descargar PDF, al final del contenido -->
+  <div class="button-wrapper">
+    <ion-button expand="block" color="tertiary" (click)="downloadPDF()">
+      Descargar PDF
+    </ion-button>
+  </div>
+</ion-content>
+
+<!-- <ion-footer>
+  <ion-toolbar>
+    <ion-button expand="block" color="tertiary" (click)="downloadPDF()" style="margin: 0 1rem;">
+      Descargar PDF
+    </ion-button>
+  </ion-toolbar>
+</ion-footer> -->

@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Detalles de la Propiedad</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="container">
+    <ion-card class="info-card">
+      <ion-card-content>
+
+        <h2 class="titulo">Servicios</h2>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="6" size-md="4" *ngFor="let servicio of propiedad.servicios">
+              <ion-chip>
+                <ion-icon *ngIf="servicio.icono" [name]="servicio.icono"></ion-icon>
+                <ion-label>{{ servicio.nombre }}</ion-label>
+              </ion-chip>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <h3 class="titulo">Especificaciones</h3>
+        <p>{{ propiedad.especificaciones_adicionales || 'Descripción no disponible' }}</p>
+
+        <div class="info">
+          <ion-icon name="location-outline"></ion-icon>
+          <p>{{ propiedad.direccion || 'Dirección no especificada' }}</p>
+        </div>
+
+        <h3 class="titulo">Total: <strong>${{ propiedad.precio || '0' }}/mes</strong></h3>
+
+        <ion-button expand="full" color="primary" (click)="solicitarVisita()">
+          Solicitar Visita
+        </ion-button>
+
+        <div *ngIf="mostrarFormulario">
+          <ion-item>
+            <ion-label>Fecha</ion-label>
+            <ion-datetime
+              display-format="YYYY-MM-DD"
+              [(ngModel)]="fecha"
+              presentation="date">
+            </ion-datetime>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Hora</ion-label>
+            <ion-datetime
+              display-format="HH:mm"
+              picker-format="HH:mm"
+              [(ngModel)]="hora"
+              presentation="time">
+            </ion-datetime>
+          </ion-item>
+
+          <ion-button expand="full" color="success" (click)="confirmarCita()">
+            Confirmar
+          </ion-button>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

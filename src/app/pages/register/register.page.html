@@ -1,0 +1,52 @@
+<ion-content class="register-content">
+  <div class="register-container">
+    <ion-card class="register-card">
+      <ion-card-header>
+        <h1>HOME 4 STUDENTS</h1>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-item>
+          <ion-icon name="person-outline" slot="start"></ion-icon>
+          <ion-input [(ngModel)]="user" (ionInput)="validateForm()" placeholder="Usuario"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-input [(ngModel)]="email" (ionInput)="validateForm()" placeholder="Correo"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-input [(ngModel)]="password" [type]="passwordType" placeholder="Contraseña"></ion-input>
+          <ion-button fill="clear" (click)="togglePasswordVisibility('password')">
+            <ion-icon [name]="passwordType === 'password' ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
+          </ion-button>
+        </ion-item>
+        
+        <ion-item>
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-input [(ngModel)]="confirmPassword" [type]="confirmPasswordType" placeholder="Confirmar contraseña"></ion-input>
+          <ion-button fill="clear" (click)="togglePasswordVisibility('confirmPassword')">
+            <ion-icon [name]="confirmPasswordType === 'password' ? 'eye-outline' : 'eye-off-outline'"></ion-icon>
+          </ion-button>
+        </ion-item>
+
+        <ion-item>
+          <ion-select [(ngModel)]="userType" (ionChange)="validateForm()" placeholder="Seleccionar rol">
+            <ion-select-option value="propietario">Propietario</ion-select-option>
+            <ion-select-option value="quiero-rentar">Quiero rentar (Estudiante)</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-button expand="full" color="success" (click)="register()" [disabled]="!isFormValid">
+          CREAR CUENTA
+        </ion-button>
+
+        <ion-text class="login-text">
+          ¿Ya tienes cuenta? <span class="login-link" (click)="navigateToLogin()">Inicia sesión</span>
+        </ion-text>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

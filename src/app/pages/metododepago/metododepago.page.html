@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Selecciona tu Método de Pago</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h2>Método de Pago</h2>
+
+  <ion-radio-group [(ngModel)]="metodoPago">
+    <ion-item>
+      <ion-label>Tarjeta de Crédito/Débito</ion-label>
+      <ion-radio slot="start" value="tarjeta"></ion-radio>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>PayPal</ion-label>
+      <ion-radio slot="start" value="paypal"></ion-radio>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Recibo para Pago en Banco (PDF)</ion-label>
+      <ion-radio slot="start" value="recibo"></ion-radio>
+    </ion-item>
+  </ion-radio-group>
+
+  <div *ngIf="metodoPago === 'tarjeta'">
+    <h3>Captura tus Datos</h3>
+
+    <ion-item>
+      <ion-label position="stacked">Número de Tarjeta</ion-label>
+      <ion-input type="text" placeholder="1234 5678 9012 3456"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">CVC</ion-label>
+      <ion-input type="text" placeholder="123"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Valida hasta</ion-label>
+      <ion-input type="text" placeholder="MM/YY"></ion-input>
+    </ion-item>
+  </div>
+
+  <div *ngIf="metodoPago === 'paypal'">
+    <h3>Redirigiendo a PayPal...</h3>
+  </div>
+
+  <div *ngIf="metodoPago === 'recibo'">
+    <h3>Se generará un recibo en PDF.</h3>
+  </div>
+
+  <ion-button expand="full" (click)="pagar()">PAGAR</ion-button>
+
+  <ion-toast
+    [isOpen]="mostrarNotificacion"
+    message="Propiedad rentada con éxito."
+    duration="2000"
+    position="middle"
+    color="success">
+  </ion-toast>
+</ion-content>

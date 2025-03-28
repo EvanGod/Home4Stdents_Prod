@@ -1,0 +1,97 @@
+<ion-menu side="end" menuId="main-menu" contentId="main-content">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Menú</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list>
+      <ion-item button (click)="verCitas()">
+        <ion-icon name="calendar" slot="start"></ion-icon>
+        <ion-label>Mis citas</ion-label>
+      </ion-item>
+
+      <ion-item button (click)="cerrarSesion()">
+        <ion-icon name="log-out" slot="start"></ion-icon>
+        <ion-label>Cerrar sesión</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<div id="main-content">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/home-propietario"></ion-back-button>
+      </ion-buttons>
+      <ion-title>Mis Citas Enviadas</ion-title>
+      <ion-buttons slot="end">
+        <ion-menu-button menu="main-menu"></ion-menu-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content fullscreen class="ion-padding">
+    <div *ngIf="citas.length === 0" class="no-citas-container">
+      <ion-icon name="calendar-clear-outline" size="large"></ion-icon>
+      <p>No tienes citas agendadas</p>
+    </div>
+
+    <ion-list *ngIf="citas.length > 0" class="citas-list">
+      <ion-item *ngFor="let cita of citas">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>{{ cita.titulo }}</ion-card-title>
+            <ion-card-subtitle>{{ cita.fecha | date:'fullDate' }} - {{ cita.hora }}</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <p>
+              <strong>Estado:</strong>
+              <ion-badge [color]="getEstadoColor(cita.status)">
+                {{ cita.status }}
+              </ion-badge>
+            </p>
+            <p *ngIf="cita.ownerData">
+              <strong>Propietario:</strong> {{ cita.ownerData.user }}
+            </p>
+            <div *ngIf="cita.propertyData">
+              <p>
+                <strong>Tipo:</strong>
+                {{ cita.propertyData.servicios?.tipo || cita.propertyData.tipo || 'N/A' }}
+              </p>
+              <p>
+                <strong>Precio:</strong>
+                {{ cita.propertyData.precio | currency }}
+              </p>
+              <p>
+                <strong>Habitaciones:</strong>
+                {{ cita.propertyData.habitaciones }}
+              </p>
+              <p>
+                <strong>Baños:</strong>
+                {{ cita.propertyData.banos }}
+              </p>
+              <p>
+                <strong>Estacionamiento:</strong>
+                {{ cita.propertyData.estacionamiento }}
+              </p>
+              <p>
+                <strong>Especificaciones:</strong>
+                {{ cita.propertyData.especificaciones_adicionales }}
+              </p>
+            </div>
+            <div *ngIf="cita.propertyData?.documento">
+              <ion-img [src]="cita.propertyData.imagenes"></ion-img>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-item>
+    </ion-list>
+
+    <ion-refresher slot="fixed" (ionRefresh)="refreshCitas($event)" pullMin="50" pullMax="150">
+      <ion-refresher-content pullingText="Desliza para actualizar..." refreshingText="Actualizando..."></ion-refresher-content>
+    </ion-refresher>
+  </ion-content>
+</div>

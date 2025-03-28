@@ -1,0 +1,134 @@
+ion-toolbar {
+  --background: #3b82f6;
+  --color: white;
+  border-radius: 0 0 20px 20px; 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-segment {
+  margin-bottom: 20px;
+  border-radius: 15px;
+  background-color: #f7f7f7;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.custom-segment ion-segment-button {
+  --color-checked: #3b82f6; 
+  --background-checked: #e3f2fd; 
+  padding: 10px 15px;
+  font-weight: 500;
+}
+
+.custom-segment ion-icon {
+  margin-right: 5px;
+}
+
+
+.scrollable-segment {
+  overflow-x: auto;
+  white-space: nowrap; 
+  -webkit-overflow-scrolling: touch; 
+}
+
+.price-filter {
+  margin-top: 20px;
+  background-color: #f7f7f7;
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  flex-direction: column;
+}
+
+.price-inputs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center; 
+}
+
+.price-input {
+  width: 120px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  background-color: #fff;
+  transition: border-color 0.3s ease;
+}
+
+.price-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.dash {
+  font-size: 18px;
+  color: #555;
+  font-weight: bold;
+}
+
+.custom-list {
+  margin-top: 20px;
+  display: grid; 
+  grid-template-columns: 1fr; 
+  gap: 20px; 
+}
+
+@media (min-width: 1024px) {
+  .custom-list {
+    grid-template-columns: repeat(2, 1fr); 
+  }
+}
+
+.custom-card {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.custom-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.custom-img {
+  width: 100%;
+  height: 150px; 
+  object-fit: cover;
+  border-bottom: 2px solid #eee; 
+}
+
+.custom-title {
+  font-weight: 600;
+  color: #3b82f6;
+  text-transform: capitalize;
+  margin: 10px;
+  font-size: 16px;
+}
+
+.custom-card-content {
+  padding: 10px;
+  font-size: 14px;
+  color: #555;
+  font-weight: 400;
+}
+
+ion-card:hover {
+  cursor: pointer;
+}
+
+ion-card-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #3b82f6;
+}
+
+ion-content {
+  --background: #f4f4f9;
+}

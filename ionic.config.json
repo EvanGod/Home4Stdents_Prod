@@ -1,0 +1,7 @@
+{
+  "name": "Rent4students",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

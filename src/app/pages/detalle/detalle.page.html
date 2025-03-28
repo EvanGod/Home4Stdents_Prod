@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      {{ propiedad.tipo ? (propiedad.tipo | uppercase) : 'PROPIEDAD' }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <!-- Carrusel de imágenes -->
+    <div class="carousel-container" *ngIf="propiedad?.imagenes?.length > 0">
+      <button (click)="cambiarImagen(-1)" class="carousel-button">❮</button>
+      <img
+        [src]="propiedad.imagenes[imagenActualIndex]"
+        *ngIf="imagenActualIndex < propiedad.imagenes.length"
+        (error)="handleImageError()"
+      />
+      <button (click)="cambiarImagen(1)" class="carousel-button">❯</button>
+    </div>
+
+    <ion-card class="info-card">
+      <ion-card-content>
+
+        <!-- Servicios -->
+        <h2>Servicios</h2>
+        <ul>
+          <li *ngIf="propiedad.servicios?.agua">✅ Agua</li>
+          <li *ngIf="propiedad.servicios?.luz">✅ Luz</li>
+          <li *ngIf="propiedad.servicios?.internet">✅ Internet</li>
+          <li *ngIf="propiedad.servicios?.gas">✅ Gas</li>
+        </ul>
+
+        <h3>Especificaciones</h3>
+        <p><strong>Tipo:</strong> {{ propiedad.tipo || 'No especificado' }}</p>
+        <p><strong>Habitaciones:</strong> {{ propiedad.habitaciones || 'No especificado' }}</p>
+        <p><strong>Baños:</strong> {{ propiedad.banos || 'No especificado' }}</p>
+        <p><strong>Estacionamiento:</strong> {{ propiedad.estacionamiento || 'No especificado' }}</p>
+        <p><strong>Descripcion:</strong> {{ propiedad.especificaciones_adicionales || 'No disponible' }}</p>
+
+
+
+        <h3>
+          Total:
+          <strong>${{ propiedad.precio || '0' }}/mes</strong>
+        </h3>
+
+        <div id="map" style="height: 300px; width: 100%;"></div>
+
+        <div class="botones">
+          <ion-button (click)="rentar()">RENTAR</ion-button>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
