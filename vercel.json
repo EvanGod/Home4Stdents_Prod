@@ -1,4 +1,10 @@
 {
+    "builds": [
+      {
+        "src": "www/index.html",
+        "use": "@vercel/static"
+      }
+    ],
     "rewrites": [
       {
         "source": "/(.*)",
