@@ -25,7 +25,7 @@ export class OfflinePage {
             }
           }
         } else {
-          this.router.navigate(['/home']);
+          this.router.navigate(['/login']);
         }
       } else {
         console.log('No hay conexión a Internet');
