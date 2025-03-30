@@ -1,13 +1,15 @@
 {
-    "builds": [
+    "headers": [
       {
-        "src": "angular.json",
-        "use": "@vercel/angular"
+        "source": "/(.*)",
+        "headers": [
+          { "key": "Cache-Control", "value": "max-age=0, no-cache, no-store, must-revalidate" },
+          { "key": "Service-Worker-Allowed", "value": "/" }
+        ]
       }
     ],
-    "routes": [
-      { "src": "/(.*)", "dest": "/index.html" }
-    ],
-    "outputDirectory": "www"
+    "rewrites": [
+      { "source": "/(.*)", "destination": "/index.html" }
+    ]
   }
   
