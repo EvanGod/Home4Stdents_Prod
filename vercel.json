@@ -1,13 +1,13 @@
 {
     "builds": [
       {
-        "src": "package.json",
-        "use": "@vercel/node",
-        "config": {
-          "buildCommand": "npm install && ionic build --prod",
-          "outputDirectory": "www"
-        }
+        "src": "angular.json",
+        "use": "@vercel/angular"
       }
-    ]
+    ],
+    "routes": [
+      { "src": "/(.*)", "dest": "/index.html" }
+    ],
+    "outputDirectory": "www"
   }
   
