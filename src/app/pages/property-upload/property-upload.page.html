@@ -28,10 +28,9 @@
             <img [src]="img" alt="Imagen subida" class="img-preview">
           </div>
         </div>
-
         <ion-item>
           <ion-label>Tipo:</ion-label>
-          <ion-radio-group [(ngModel)]="propertyType">
+          <ion-radio-group [(ngModel)]="propertyType" (ionChange)="onPropertyTypeChange()">
             <ion-item>
               <ion-radio slot="start" value="casa"></ion-radio>
               <ion-label>Casa</ion-label>
@@ -59,20 +58,15 @@
 
         <ion-item>
           <ion-label>Habitaciones:</ion-label>
-          <ion-select [(ngModel)]="rooms">
-            <ion-select-option value="1">1</ion-select-option>
-            <ion-select-option value="2">2</ion-select-option>
-            <ion-select-option value="3">3</ion-select-option>
-            <ion-select-option value="4">4+</ion-select-option>
+          <ion-select [(ngModel)]="rooms" [disabled]="disableRoomsAndBathrooms">
+            <ion-select-option *ngFor="let num of [1,2,3,4,5]" [value]="num">{{ num }}</ion-select-option>
           </ion-select>
         </ion-item>
-
+        
         <ion-item>
           <ion-label>Baños:</ion-label>
-          <ion-select [(ngModel)]="bathrooms">
-            <ion-select-option value="1">1</ion-select-option>
-            <ion-select-option value="2">2</ion-select-option>
-            <ion-select-option value="3">3+</ion-select-option>
+          <ion-select [(ngModel)]="bathrooms" [disabled]="disableRoomsAndBathrooms">
+            <ion-select-option *ngFor="let num of [1,2,3,4,5]" [value]="num">{{ num }}</ion-select-option>
           </ion-select>
         </ion-item>
 
