@@ -174,4 +174,10 @@
   .modal-button {
     font-size: 14px;
   }
+  ion-item {
+    --inner-padding-end: 0;
+    --padding-start: 0;
+  }
+
+  
 }
