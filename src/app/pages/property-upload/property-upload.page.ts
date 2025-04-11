@@ -255,4 +255,17 @@ export class PropertyUploadPage implements AfterViewInit{
     const modal = document.getElementById('confirmationModal')!;
     modal.style.display = 'none';
   }
+
+  // Nueva variable para controlar si se deshabilitan
+disableRoomsAndBathrooms: boolean = false;
+
+onPropertyTypeChange() {
+  if (this.propertyType.toLowerCase() === 'cuarto') {
+    this.rooms = 1;
+    this.bathrooms = 1;
+    this.disableRoomsAndBathrooms = true;
+  } else {
+    this.disableRoomsAndBathrooms = false;
+  }
+}
 }
