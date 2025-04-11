@@ -48,6 +48,7 @@ export class PropertyUploadPage implements AfterViewInit{
   longitude: number | null = null;
   map: any;
   marker: any;
+  isPublishing: boolean = false;
 
   constructor(
     private navCtrl: NavController,
@@ -86,22 +87,49 @@ export class PropertyUploadPage implements AfterViewInit{
   initMap() {
     const mapElement = document.getElementById('map')!;
     this.map = new google.maps.Map(mapElement, {
-      center: { lat: 20.5937, lng: -100.4261 }, // Querétaro por defecto
       zoom: 14,
     });
-
-    // Crear un marcador para la ubicación seleccionada
-    this.marker = new google.maps.Marker({
-      position: { lat: 20.5937, lng: -100.4261 }, // Querétaro por defecto
-      map: this.map,
-      title: "Ubicación de la propiedad"
-    });
-
+  
+    // Intentamos obtener la ubicación del usuario
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // Si la geolocalización es exitosa, obtenemos la latitud y longitud
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
+  
+          // Centrar el mapa en la ubicación del usuario
+          this.map.setCenter(new google.maps.LatLng(userLat, userLng));
+  
+          // Crear un marcador para la ubicación actual del usuario
+          this.marker = new google.maps.Marker({
+            position: { lat: userLat, lng: userLng },
+            map: this.map,
+            title: "Ubicación actual del usuario",
+          });
+  
+          // Actualizamos las variables de latitud y longitud
+          this.latitude = userLat;
+          this.longitude = userLng;
+        },
+        (error) => {
+          // Si no podemos obtener la ubicación, mostramos un error
+          console.error("Error al obtener la ubicación: ", error);
+          // Usamos una ubicación por defecto (Querétaro)
+          this.map.setCenter({ lat: 20.5937, lng: -100.4261 });
+        }
+      );
+    } else {
+      // Si el navegador no soporta geolocalización, usamos la ubicación por defecto
+      console.error("Geolocalización no soportada por el navegador.");
+      this.map.setCenter({ lat: 20.5937, lng: -100.4261 });
+    }
+  
     // Escuchar el evento de clic en el mapa para seleccionar la ubicación
     google.maps.event.addListener(this.map, 'click', (event: any) => {
       this.latitude = event.latLng.lat();
       this.longitude = event.latLng.lng();
-
+  
       this.marker.setPosition(event.latLng); // Mover el marcador a la nueva ubicación
       this.map.setCenter(event.latLng); // Centrar el mapa en la nueva ubicación
     });
@@ -184,6 +212,8 @@ export class PropertyUploadPage implements AfterViewInit{
 
   // Publica la propiedad guardando la información en Firestore
   async publish() {
+
+    if (this.isPublishing) return;
     const errorMessage = this.validateForm();
   
     if (errorMessage) {
@@ -191,6 +221,8 @@ export class PropertyUploadPage implements AfterViewInit{
       return;
     }
   
+    this.isPublishing = true;
+
     const loading = await this.loadingController.create({
       message: 'Publicando propiedad...',
       spinner: 'bubbles',
@@ -243,6 +275,7 @@ export class PropertyUploadPage implements AfterViewInit{
       this.showAlert('Hubo un problema al guardar la propiedad. Por favor, inténtalo nuevamente.');
     } finally {
       await loading.dismiss();
+      this.isPublishing = false;
     }
   }
 
@@ -254,6 +287,7 @@ export class PropertyUploadPage implements AfterViewInit{
   closeModal() {
     const modal = document.getElementById('confirmationModal')!;
     modal.style.display = 'none';
+    this.navCtrl.navigateRoot('/home-propietario');
   }
 
   // Nueva variable para controlar si se deshabilitan

@@ -141,7 +141,7 @@
             </div>
           </div>
           
-          <ion-button expand="full" color="success" (click)="publish()">
+          <ion-button expand="full" color="success" (click)="publish()" [disabled]="isPublishing">
             VALIDAR Y PUBLICAR
           </ion-button>
 
