@@ -4,6 +4,8 @@ import { Firestore, doc, setDoc, getDoc, addDoc, collection, query, where, getDo
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { onAuthStateChanged } from '@angular/fire/auth';
+
 
 @Injectable({
   providedIn: 'root'
@@ -195,19 +197,25 @@ async updateCitaStatus(citaId: string, status: string) {
 }
 
 //buscar propiedades por id de propetario
-async getUserProperties(): Promise<any[]> { // Replace 'any' with the correct type if available
-  // Obtenemos el usuario actual
-  const user = this.auth.currentUser;
-  if (!user || !user.uid) {
-    throw new Error('Usuario no autenticado');
-  }
+async getUserProperties(): Promise<any[]> {
+  return new Promise((resolve, reject) => {
+    onAuthStateChanged(this.auth, async (user) => {
+      if (!user) {
+        reject(new Error('Usuario no autenticado'));
+        return;
+      }
 
-  // Realizamos la consulta filtrando las propiedades cuyo ownerId coincida con el id del usuario actual
-  const propertiesRef = collection(this.firestore, 'properties');
-  const q = query(propertiesRef, where('ownerId', '==', user.uid));
-  const querySnapshot = await getDocs(q);
-  const properties = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-  return properties;
+      try {
+        const q = query(collection(this.firestore, 'properties'), where('ownerId', '==', user.uid));
+        const querySnapshot = await getDocs(q);
+        const properties = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        resolve(properties);
+      } catch (error) {
+        console.error('Error al obtener propiedades del usuario:', error);
+        reject(error);
+      }
+    });
+  });
 }
  // Actualiza una propiedad (envuelta en runInInjectionContext)
  updateProperty(propertyId: string, updatedData: any): Promise<void> {
