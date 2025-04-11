@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
-import { AuthService } from '../../../services/auth.service'; // Ajusta la ruta según tu proyecto
+import { NavController, LoadingController } from '@ionic/angular';
+import { AuthService } from '../../../services/auth.service';
 import { ModalController } from '@ionic/angular';
-import { PropertyUpdateModalComponent } from './property-update-modal.component'; // Adjust the path as needed
-import { PropertyDeleteModalComponent } from './property-delete-modal.component'; // Adjust the path as needed
+import { PropertyUpdateModalComponent } from './property-update-modal.component';
+import { PropertyDeleteModalComponent } from './property-delete-modal.component';
 
 @Component({
   selector: 'app-home-propietario',
@@ -12,15 +12,21 @@ import { PropertyDeleteModalComponent } from './property-delete-modal.component'
   standalone: false
 })
 export class HomePropietarioPage implements OnInit {
-  userProperties: any[] = []; // Arreglo donde se guardarán las propiedades del usuario
+  userProperties: any[] = [];
+  loading: any;
 
   constructor(
     private authService: AuthService,
     private modalController: ModalController,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private loadingCtrl: LoadingController
   ) {}
 
   ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    // Se ejecuta cada vez que se entra o regresa a esta página
     this.checkUserAuthentication();
   }
 
@@ -29,67 +35,103 @@ export class HomePropietarioPage implements OnInit {
     
     if (!storedUserData) {
       this.navCtrl.navigateRoot('/login');
+      await this.dismissLoading(); // Asegúrate de cerrar el spinner
       return;
     }
-
+  
     const userData = JSON.parse(storedUserData);
-    
+  
     if (userData && userData.userType === 'propietario') {
-      this.loadUserProperties();
+      await this.presentLoading(); // Mostrar el spinner
+  
+      // Establecer un temporizador de 5 segundos para cerrar el spinner si no hay propiedades
+      const timeout = setTimeout(() => {
+        console.log('Temporizador: cerrando spinner después de 5 segundos');
+        this.dismissLoading();  // Cerrar spinner después del timeout
+      }, 5000); // 5 segundos
+  
+      try {
+        await this.loadUserProperties(); // Cargar propiedades
+        clearTimeout(timeout); // Si ya se cargaron las propiedades, se cancela el temporizador
+      } catch (error) {
+        console.error('Error al cargar propiedades:', error);
+      } finally {
+        console.log('Ejecutando finalmente, cerrando spinner');
+        // Siempre cerrar el loading en el bloque finally
+        await this.dismissLoading();
+      }
     } else {
       this.navCtrl.navigateRoot('/login');
     }
   }
-
- // Abre el modal de actualización y actualiza la propiedad en Firestore.
- async openUpdateModal(property: any) {
-  const modal = await this.modalController.create({
-    component: PropertyUpdateModalComponent,
-    componentProps: { property: { ...property } } // Clona la propiedad para no modificar la original directamente
-  });
-  await modal.present();
-
-  const { data } = await modal.onWillDismiss();
-  if (data && data.updatedProperty) {
-    try {
-      await this.authService.updateProperty(property.id, data.updatedProperty);
-      console.log('Propiedad actualizada correctamente');
-      // Puedes actualizar la lista local de propiedades o recargar la lista.
-      this.loadUserProperties();
-    } catch (error) {
-      console.error('Error al actualizar propiedad:', error);
+  
+  async dismissLoading() {
+    if (this.loading) {
+      try {
+        console.log('Cerrando el spinner');
+        await this.loading.dismiss();
+        this.loading = null;  // Asegúrate de limpiar el objeto loading
+      } catch (e) {
+        console.warn('El loading ya se cerró o no estaba disponible', e);
+      }
+    } else {
+      console.warn('No se encontró el spinner para cerrar');
     }
   }
-}
-
-// Abre el modal de eliminación y elimina la propiedad en Firestore si se confirma.
-async openDeleteModal(property: any) {
-  const modal = await this.modalController.create({
-    component: PropertyDeleteModalComponent,
-    componentProps: { property }
-  });
-  await modal.present();
-
-  const { data } = await modal.onWillDismiss();
-  if (data && data.deleteConfirmed) {
-    try {
-      await this.authService.deleteProperty(property.id);
-      console.log('Propiedad eliminada correctamente');
-      // Actualiza la lista local eliminando el elemento eliminado.
-      this.userProperties = this.userProperties.filter(p => p.id !== property.id);
-    } catch (error) {
-      console.error('Error al eliminar propiedad:', error);
-    }
-  }
-}
-
-  // Llama a la función del servicio para obtener las propiedades del usuario actual
+  
   async loadUserProperties() {
     try {
       this.userProperties = await this.authService.getUserProperties();
       console.log('Propiedades del usuario:', this.userProperties);
     } catch (error) {
       console.error('Error al cargar propiedades:', error);
+    }
+  }
+  
+  async presentLoading() {
+    this.loading = await this.loadingCtrl.create({
+      message: 'Cargando propiedades...',
+      spinner: 'bubbles',
+      translucent: true
+    });
+    await this.loading.present();
+  }
+  
+
+
+  async openUpdateModal(property: any) {
+    const modal = await this.modalController.create({
+      component: PropertyUpdateModalComponent,
+      componentProps: { property: { ...property } }
+    });
+    await modal.present();
+
+    const { data } = await modal.onWillDismiss();
+    if (data && data.updatedProperty) {
+      try {
+        await this.authService.updateProperty(property.id, data.updatedProperty);
+        this.loadUserProperties();
+      } catch (error) {
+        console.error('Error al actualizar propiedad:', error);
+      }
+    }
+  }
+
+  async openDeleteModal(property: any) {
+    const modal = await this.modalController.create({
+      component: PropertyDeleteModalComponent,
+      componentProps: { property }
+    });
+    await modal.present();
+
+    const { data } = await modal.onWillDismiss();
+    if (data && data.deleteConfirmed) {
+      try {
+        await this.authService.deleteProperty(property.id);
+        this.userProperties = this.userProperties.filter(p => p.id !== property.id);
+      } catch (error) {
+        console.error('Error al eliminar propiedad:', error);
+      }
     }
   }
 
@@ -106,19 +148,15 @@ async openDeleteModal(property: any) {
     this.navCtrl.navigateRoot('/login');
   }
 
-  // Puedes definir funciones para editar o ver en detalle la propiedad
   verDetalle(propiedad: any) {
-    // Por ejemplo, navega a una página de detalle pasando el id de la propiedad
     this.navCtrl.navigateForward(['/detalle'], { state: { id: propiedad.id } });
   }
 
   editarPropiedad(propiedad: any) {
-    // Lógica para editar la propiedad
     console.log('Editar propiedad:', propiedad);
   }
 
   eliminarPropiedad(propiedad: any) {
-    // Lógica para eliminar la propiedad
     console.log('Eliminar propiedad:', propiedad);
   }
 }
