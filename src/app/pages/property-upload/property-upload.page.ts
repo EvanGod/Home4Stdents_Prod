@@ -107,19 +107,19 @@ export class PropertyUploadPage implements AfterViewInit{
     });
   }
 
-  isFormValid(): boolean {
-    return (
-      this.propertyType.trim() !== '' &&
-      this.rooms > 0 &&
-      this.bathrooms > 0 &&
-      this.parking >= 0 &&
-      this.additionalSpecs.trim() !== '' &&
-      this.documentPreview !== null &&
-      (this.ineSelected || this.passportSelected) &&
-      this.propertyImages.length > 0 &&
-      this.price !== null && this.price > 0 &&
-      this.latitude !== null && this.longitude !== null
-    );
+  validateForm(): string | null {
+    if (this.propertyType.trim() === '') return 'El tipo de propiedad es obligatorio';
+    if (this.rooms <= 0) return 'Debes indicar al menos 1 habitación';
+    if (this.bathrooms <= 0) return 'Debes indicar al menos 1 baño';
+    if (this.parking < 0) return 'El número de estacionamientos no puede ser negativo';
+    if (this.additionalSpecs.trim() === '') return 'Las especificaciones adicionales son obligatorias';
+    if (!this.documentPreview) return 'Debes subir un documento de identidad';
+    if (!this.ineSelected && !this.passportSelected) return 'Debes seleccionar al menos un documento de identidad (INE o Pasaporte)';
+    if (this.propertyImages.length === 0) return 'Debes subir al menos una imagen de la propiedad';
+    if (!this.price || this.price <= 0) return 'El precio es obligatorio y debe ser mayor a 0';
+    if (this.latitude === null || this.longitude === null) return 'Debes seleccionar una ubicación válida';
+  
+    return null; // Todo bien
   }
   
 
@@ -184,14 +184,21 @@ export class PropertyUploadPage implements AfterViewInit{
 
   // Publica la propiedad guardando la información en Firestore
   async publish() {
-
+    const errorMessage = this.validateForm();
+  
+    if (errorMessage) {
+      this.showAlert(errorMessage);
+      return;
+    }
+  
     const loading = await this.loadingController.create({
       message: 'Publicando propiedad...',
       spinner: 'bubbles',
       cssClass: 'custom-spinner'
     });
+  
     await loading.present();
-
+  
     try {
       const user = await this.afAuth.currentUser;
       if (!user) {
@@ -199,9 +206,9 @@ export class PropertyUploadPage implements AfterViewInit{
         await loading.dismiss();
         return;
       }
-      const ownerId = user.uid;
+  
       const propertyData = {
-        ownerId: ownerId,
+        ownerId: user.uid,
         tipo: this.propertyType,
         habitaciones: this.rooms,
         banos: this.bathrooms,
@@ -224,19 +231,17 @@ export class PropertyUploadPage implements AfterViewInit{
         longitud: this.longitude,
         createdAt: new Date()
       };
-
+  
       await runInInjectionContext(this.injector, async () => {
         await this.afs.collection('properties').add(propertyData);
       });
-
+  
       console.log('Propiedad publicada:', propertyData);
       this.openModal();
-
-      await loading.dismiss();
-
     } catch (error) {
       console.error("Error al publicar la propiedad: ", error);
       this.showAlert('Hubo un problema al guardar la propiedad. Por favor, inténtalo nuevamente.');
+    } finally {
       await loading.dismiss();
     }
   }
