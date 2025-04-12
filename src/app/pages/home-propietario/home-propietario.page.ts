@@ -4,6 +4,8 @@ import { AuthService } from '../../../services/auth.service';
 import { ModalController } from '@ionic/angular';
 import { PropertyUpdateModalComponent } from './property-update-modal.component';
 import { PropertyDeleteModalComponent } from './property-delete-modal.component';
+import { ToastController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-home-propietario',
@@ -19,7 +21,9 @@ export class HomePropietarioPage implements OnInit {
     private authService: AuthService,
     private modalController: ModalController,
     private navCtrl: NavController,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private toastController: ToastController  // Inyecta ToastController
+
   ) {}
 
   ngOnInit() {
@@ -29,6 +33,17 @@ export class HomePropietarioPage implements OnInit {
     // Se ejecuta cada vez que se entra o regresa a esta página
     this.checkUserAuthentication();
   }
+
+  async presentToast(message: string, color: string = 'success') {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,  // Duración en milisegundos
+      color,
+      position: 'bottom'
+    });
+    await toast.present();
+  }
+  
 
   async checkUserAuthentication() {
     const storedUserData = localStorage.getItem('userData');
@@ -105,17 +120,20 @@ export class HomePropietarioPage implements OnInit {
       componentProps: { property: { ...property } }
     });
     await modal.present();
-
+  
     const { data } = await modal.onWillDismiss();
     if (data && data.updatedProperty) {
       try {
         await this.authService.updateProperty(property.id, data.updatedProperty);
+        await this.presentToast('Propiedad actualizada con éxito.');
         this.loadUserProperties();
       } catch (error) {
         console.error('Error al actualizar propiedad:', error);
+        await this.presentToast('Error al actualizar propiedad.', 'danger');
       }
     }
   }
+  
 
   async openDeleteModal(property: any) {
     const modal = await this.modalController.create({
@@ -123,17 +141,20 @@ export class HomePropietarioPage implements OnInit {
       componentProps: { property }
     });
     await modal.present();
-
+  
     const { data } = await modal.onWillDismiss();
     if (data && data.deleteConfirmed) {
       try {
         await this.authService.deleteProperty(property.id);
         this.userProperties = this.userProperties.filter(p => p.id !== property.id);
+        await this.presentToast('Propiedad eliminada con éxito.');
       } catch (error) {
         console.error('Error al eliminar propiedad:', error);
+        await this.presentToast('Error al eliminar propiedad.', 'danger');
       }
     }
   }
+  
 
   verCitas() {
     this.navCtrl.navigateForward('/citas-propietario');
